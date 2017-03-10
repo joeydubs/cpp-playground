@@ -30,7 +30,7 @@ void Inventory::addItem(Item item) {
 }
 
 Item Inventory::getItem(int slot) {
-	Item item = inventory.at(slot);
+	Item item(inventory.at(slot));
 	inventory.erase(slot);
 	full = false;
 

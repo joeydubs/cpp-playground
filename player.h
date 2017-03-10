@@ -11,6 +11,7 @@
 
 #include <string>
 #include "inventory.h"
+#include "item.h"
 
 using namespace std;
 
@@ -57,6 +58,8 @@ public:
 	void addToInventory(Item item);
 
 	void showInventory();
+
+	void useItem();
 };
 
 #endif

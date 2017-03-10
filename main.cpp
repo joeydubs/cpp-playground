@@ -74,6 +74,10 @@ void play(Player *player) {
 			case 3:
 				cout << "You chose See Inventory" << endl;
 				player -> showInventory();
+				cout << "Using item in slot 1:" << endl;
+				player -> useItem();
+				cout << "Showing inventory again" << endl;
+				player -> showInventory();
 			break;
 			case 4:
 				cout << "You chose Quit!" << endl;

@@ -139,3 +139,7 @@ void Player::addToInventory(Item item) {
 void Player::showInventory() {
 	inv.showInv();
 }
+
+void Player::useItem() {
+	inv.getItem(1);
+}
