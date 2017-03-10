@@ -20,7 +20,6 @@ private:
 	int levelReq;
 public:
 	Item(string name, int type, int levelReq);
-	Item();
 	string getName() {return name;}
 	int getType() {return type;}
 	friend ostream &operator<<(ostream &out, const Item &item);

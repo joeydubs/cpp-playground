@@ -34,8 +34,11 @@ public:
 
 	int dealDamage();
 	void takeDamage(int damageDelt);
+
 	bool isAlive() {return health > 0;}
 	string vitals();
+
+	Item getDrop();
 };
 
 #endif
