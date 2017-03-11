@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "monster.h"
+#include "item.h"
 
 using namespace std;
 
@@ -64,6 +65,7 @@ string Monster::vitals() {
 }
 
 Item Monster::getDrop() {
-	Item drop("Some Shield", 1, 1);
+	int slot = rand() % dropTable.size();
+	Item drop = dropTable.at(slot);
 	return drop;
 }

@@ -12,19 +12,11 @@
 #include <sstream>
 #include "player.h"
 #include "monster.h"
-#include "item.h"
+//#include "item.h"
 
 // Allows std functions to be used in an unqualified manner. ie. 'cout' instead of std::cout'
 using namespace std;
 
-Item dropTable = {
-	Item someSword("Some Sword", 1, 1);
-	Item someShield("Some Shield", 1, 1);
-	Item someHelmet("Some Helmet", 1, 1);
-	Item someChestplate("Some Chestplate", 1, 1);
-	Item somePlatelegs("Some Platelegs", 1, 1);
-	Item someOffHandWeapon("Some Off-Hand Weapon", 1, 1);
-}
 
 void fight(Player *player) {
 	srand(time(0));
@@ -48,6 +40,7 @@ void fight(Player *player) {
 		else {
 			cout << "You slew the " << monster.getName() << "!" << endl << endl;
 			player -> addExp(monster.expDrop);
+			player -> addToInventory(monster.getDrop());
 		}
 
 		round++;
@@ -83,10 +76,6 @@ void play(Player *player) {
 			case 3:
 				cout << "You chose See Inventory" << endl;
 				player -> showInventory();
-				cout << "Using item in slot 1:" << endl;
-				player -> useItem();
-				cout << "Showing inventory again" << endl;
-				player -> showInventory();
 			break;
 			case 4:
 				cout << "You chose Quit!" << endl;
@@ -114,10 +103,6 @@ int main() {
 	cout << "\n\n\n";
 
 	Player player(name, age);
-
-	Item item("Some Sword", 1, 1);
-
-	player.addToInventory(item);
 
 	play(&player);
 

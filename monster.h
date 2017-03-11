@@ -10,6 +10,8 @@
 #define MONSTER_H
 
 #include <string>
+#include <array>
+#include "item.h"
 
 using namespace std;
 
@@ -23,6 +25,16 @@ private:
 	int attack;
 	int strength;
 	int defense;
+
+	array <Item, 6> dropTable {
+		Item("Some Sword", 1, 1),
+		Item("Some Shield", 1, 1),
+		Item("Some Helmet", 1, 1),
+		Item("Some Chestplate", 1, 1),
+		Item("Some Platelegs", 1, 1),
+		Item("Some Off-Hand Weapon", 1, 1)
+	};
+
 
 public:
 	// Constructor
