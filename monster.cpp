@@ -62,3 +62,8 @@ void Monster::takeDamage(int damageDelt) {
 string Monster::vitals() {
 	return std::to_string(health) + "/" + std::to_string(maxHealth);
 }
+
+Item Monster::getDrop() {
+	Item drop("Some Shield", 1, 1);
+	return drop;
+}

@@ -17,6 +17,15 @@
 // Allows std functions to be used in an unqualified manner. ie. 'cout' instead of std::cout'
 using namespace std;
 
+Item dropTable = {
+	Item someSword("Some Sword", 1, 1);
+	Item someShield("Some Shield", 1, 1);
+	Item someHelmet("Some Helmet", 1, 1);
+	Item someChestplate("Some Chestplate", 1, 1);
+	Item somePlatelegs("Some Platelegs", 1, 1);
+	Item someOffHandWeapon("Some Off-Hand Weapon", 1, 1);
+}
+
 void fight(Player *player) {
 	srand(time(0));
 
