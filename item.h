@@ -22,6 +22,7 @@ public:
 	Item(string name, int type, int levelReq);
 	string getName() {return name;}
 	int getType() {return type;}
+	string toString();
 	friend ostream &operator<<(ostream &out, const Item &item);
 };
 

@@ -57,9 +57,11 @@ void play(Player *player) {
 
 	while (playing) {
 		int pChoice;
+		bool viewInv = false;
+
 
 		cout << "What would you like to do?" << endl;
-		cout << "[1:Adventure], [2:Heal], [3:Show Inventory], [4:Quit]" << endl;
+		cout << "[1:Adventure], [2:Heal], [3:View Inventory], [4:Quit]" << endl;
 
 		cin >> pChoice;
 
@@ -74,15 +76,34 @@ void play(Player *player) {
 				cout << "Player vitals: " << player->vitals() << endl;
 			break;
 			case 3:
-				cout << "You chose See Inventory" << endl;
+				cout << "You chose View Inventory" << endl;
+				viewInv = true;
 				player -> showInventory();
+				while (viewInv) {
+					cout << "What would you like to do?" << endl;
+					cout << "[1:Use Item], [2:Return]" << endl;
+					cin >> pChoice;
+					if (pChoice == 1) {
+						cout << "You chose to use an item, which item would you like to use?" << endl;
+						cin >> pChoice;
+						player -> useItem(pChoice);
+						player -> showInventory();
+					}
+					else if (pChoice == 2) {
+						cout << "You chose to exit the inventory view, returning to main." << endl;
+						viewInv = false;
+					}
+					else {
+						cout << "Oops! Try again with a number relating to the option you would like to pick." << endl;
+					}
+				};
 			break;
 			case 4:
 				cout << "You chose Quit!" << endl;
 				playing = false;
 			break;
 			default:
-				cout << "Oops! Try again!" << endl;
+				cout << "Oops! Try again with a number relating to the option you would like to pick." << endl;
 		}
 
 		cout << endl;

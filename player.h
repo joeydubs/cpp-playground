@@ -59,7 +59,7 @@ public:
 
 	void showInventory();
 
-	void useItem();
+	void useItem(int slot);
 };
 
 #endif

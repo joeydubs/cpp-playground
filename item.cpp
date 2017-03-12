@@ -15,6 +15,10 @@ Item::Item(string n, int t, int l) : name(n), type(t), levelReq(l) {
 
 }
 
+string Item::toString() {
+	return name;
+}
+
 ostream &operator<<(ostream &out, const Item &item) {
 	return out << item.name;
 }

@@ -133,13 +133,19 @@ string Player::vitals() {
 }
 
 void Player::addToInventory(Item item) {
-	inv.addItem(item);
+	if (!inv.isFull()) {
+		inv.addItem(item);
+	}
+	else {
+		cout << "Your inventory is full." << endl;
+	}
 }
 
 void Player::showInventory() {
 	inv.showInv();
 }
 
-void Player::useItem() {
-	inv.getItem(1);
+void Player::useItem(int slot) {
+	Item item = inv.getItem(slot);
+	cout << "You chose to use the item " << item.toString() << "." << endl;
 }
