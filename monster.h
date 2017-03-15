@@ -12,6 +12,7 @@
 #include <string>
 #include <array>
 #include "item.h"
+#include "consumable.h"
 
 using namespace std;
 
@@ -25,17 +26,6 @@ private:
 	int attack;
 	int strength;
 	int defense;
-
-	array <Item, 6> dropTable {
-		Item("Some Sword", 1, 1),
-		Item("Some Shield", 1, 1),
-		Item("Some Helmet", 1, 1),
-		Item("Some Chestplate", 1, 1),
-		Item("Some Platelegs", 1, 1),
-		Item("Some Off-Hand Weapon", 1, 1)
-	};
-
-
 public:
 	// Constructor
 	Monster(string name, int maxHealth);
@@ -50,7 +40,7 @@ public:
 	bool isAlive() {return health > 0;}
 	string vitals();
 
-	Item getDrop();
+	Item* getDrop();
 };
 
 #endif

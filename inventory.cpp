@@ -19,18 +19,18 @@ Inventory::Inventory() {
 	size = 28;
 }
 
-void Inventory::addItem(Item item) {
+void Inventory::addItem(Item *item) {
 	if (!full) {
 		inventory.insert({nextFree, item});
 		findNextFree();
 	}
 	else {
-		cout << "Your inventory is full (Inv::addItem)";
+		cout << "Your inventory is full (Inventory::addItem)";
 	}
 }
 
-Item Inventory::getItem(int slot) {
-	Item item = inventory.at(slot);
+Item* Inventory::getItem(int slot) {
+	Item *item = inventory.at(slot);
 	inventory.erase(slot);
 	full = false;
 
@@ -39,6 +39,16 @@ Item Inventory::getItem(int slot) {
 	}
 
 	return item;
+}
+
+void Inventory::dropItem(int slot) {
+	cout << inventory.at(slot) -> toString() << " is being dropped." << endl;
+	inventory.erase(slot);
+	full = false;
+
+	if (nextFree > slot) {
+		nextFree = slot;
+	}
 }
 
 void Inventory::findNextFree() {
@@ -52,14 +62,14 @@ void Inventory::findNextFree() {
 	}
 }
 
-void Inventory::showInv() {
+void Inventory::showInventory() {
 	for (int i = 1; i <= size; i++) {
 		if (inventory.count(i)) {
 			if (i < 10) {
-				cout << "Slot  " << i << ": " << inventory.at(i) << endl;
+				cout << "Slot  " << i << ": " << inventory.at(i) -> toString() << endl;
 			}
 			else {
-				cout << "Slot " << i << ": " << inventory.at(i) << endl;
+				cout << "Slot " << i << ": " << inventory.at(i) -> toString() << endl;
 
 			}
 		}
@@ -72,4 +82,6 @@ void Inventory::showInv() {
 			}
 		}
 	}
+
+	cout << endl;
 }

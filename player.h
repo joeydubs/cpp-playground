@@ -11,28 +11,41 @@
 
 #include <string>
 #include "inventory.h"
+#include "equipment.h"
 #include "item.h"
+#include "equippable.h"
+#include "consumable.h"
 
 using namespace std;
 
 class Player {
 private:
 	string name;
-	int age;
-
+	int age;	
+	
+	int baseHealth;
 	int health;
+	int healthBonus;
 	int maxHealth;
-
+	
+	int baseAttack;
 	int attack;
+	int attackBonus;
+
+	int baseStrength;
 	int strength;
+	int strengthBonus;
+
+	int baseDefense;
 	int defense;
+	int defenseBonus;
 
 	int experience;
 	int level;
 	int nextLevel;
 
-	Inventory inv;
-
+	Inventory inventory;
+	Equipment equipment;
 public:
 	// Constructor
 	Player(string name, int age);
@@ -55,11 +68,23 @@ public:
 	void heal();
 	string vitals();
 
-	void addToInventory(Item item);
-
+	void addToInventory(Item *item);
+	void dropItem(int slot);
 	void showInventory();
 
+	void showEquipment();
+
 	void useItem(int slot);
+	void equip(Equippable *item);
+	void unequip(int slot);
+	void consume(Consumable *item);
+
+	void boostStats(Equippable *item);
+	void reduceStats(Equippable *item);
+
+	void refreshStats();
+
+	void showStats();
 };
 
 #endif

@@ -11,25 +11,36 @@
 #include <cmath>
 #include "player.h"
 #include "inventory.h"
+#include "equipment.h"
+#include "equippable.h"
+#include "consumable.h"
 
 using namespace std;
 
-Player::Player(string name, int age) {
-	this->name = name;
-	this->age = age;
-
-	maxHealth = 150;
-	health = maxHealth;
+Player::Player(string name, int age) : name(name), age(age) {
+	baseHealth = 150;
+	health = baseHealth;
+	healthBonus = 0;
+	maxHealth = baseHealth + healthBonus;
 	
-	attack = 10;
-	strength = 10;
-	defense = 10;
+	baseAttack = 10;
+	attack = baseAttack;
+	attackBonus = 0;
+
+	baseStrength = 10;
+	strength = baseStrength;
+	strengthBonus = 0;
+
+	baseDefense = 10;
+	defense = baseDefense;
+	defenseBonus = 0;
 
 	experience = 0;
 	level = 1;
 	nextLevel = pow(2, (level + 2));
 
-	inv = Inventory();
+	Inventory inventory{};
+	Equipment equipment{};
 }
 
 void Player::setName(string name) {
@@ -55,8 +66,15 @@ void Player::levelUp() {
 	experience %= nextLevel;
 	nextLevel = pow(2, (level + 2));
 	cout << "You leveled up! You are now level " << level << "." << endl;
+
+	int skillPoint;
 	
-	int skillPoint = 1;
+	if (level < 5) {
+		skillPoint = 1;
+	}
+	else {
+		skillPoint = 2;
+	}
 
 	while (skillPoint > 0) {
 		int pChoice;
@@ -66,29 +84,37 @@ void Player::levelUp() {
 
 		switch (pChoice) {
 			case 1:
-				attack++;
+				baseAttack++;
+				attack = baseAttack + attackBonus;
 				skillPoint--;
-				cout << "You chose to add 1 point to Attack. Your Attack is now " << attack << "." << endl;
+				cout << "You chose to add 1 point to Attack. Your Base Attack is now " << baseAttack << "." << endl;
 				break;
 			case 2:
-				strength++;
+				baseStrength++;
+				strength = baseStrength + strengthBonus;
 				skillPoint--;
-				cout << "You chose to add 1 point to Strength. Your Strength is now " << strength << "." << endl;
+				cout << "You chose to add 1 point to Strength. Your Base Strength is now " << baseStrength << "." << endl;
 				break;
 			case 3:
-				defense++;
+				baseDefense++;
+				defense = baseDefense + defenseBonus;
 				skillPoint--;
-				cout << "You chose to add 1 point to Defense. Your Defense is now " << defense << "." << endl;
+				cout << "You chose to add 1 point to Defense. Your Base Defense is now " << baseDefense << "." << endl;
 				break;
 			case 4:
-				maxHealth += 5;
+				baseHealth += 5;
+				health = baseHealth + healthBonus;
 				skillPoint--;
-				cout << "You chose to add 1 point to Health. You Max Health is now " << maxHealth << "." << endl;
+				cout << "You chose to add 1 point to Health. You Base Health is now " << baseHealth << "." << endl;
 				break;
 			default:
 				cout << "Oops, try again." << endl << endl;
 		}
+
+		cout << endl;
 	}
+
+	refreshStats();
 }
 
 int Player::dealDamage() {
@@ -132,20 +158,123 @@ string Player::vitals() {
 	return to_string(health) + "/" + to_string(maxHealth);
 }
 
-void Player::addToInventory(Item item) {
-	if (!inv.isFull()) {
-		inv.addItem(item);
+void Player::addToInventory(Item *item) {
+	if (!inventory.isFull()) {
+		inventory.addItem(item);
+		cout << item -> toString() << " added to inventory." << endl;
 	}
 	else {
 		cout << "Your inventory is full." << endl;
 	}
 }
 
+void Player::dropItem(int slot) {
+	inventory.dropItem(slot);
+}
+
 void Player::showInventory() {
-	inv.showInv();
+	inventory.showInventory();
+}
+
+void Player::showEquipment() {
+	equipment.showEquipment();
 }
 
 void Player::useItem(int slot) {
-	Item item = inv.getItem(slot);
-	cout << "You chose to use the item " << item.toString() << "." << endl;
+	Item *item = inventory.getItem(slot);
+	cout << "You chose to use the item " << item -> toString() << "." << endl;
+
+	switch (item -> getType()) {
+		case 1:
+			equip(dynamic_cast<Equippable*>(item));
+		break;
+		case 2:
+			consume(dynamic_cast<Consumable*>(item));
+		break;
+		default:
+			cout << "This item is not a recognized type." << endl;
+			addToInventory(item);
+	}
+}
+
+void Player::equip(Equippable *item) {
+	int itemSlot = item -> getSlot();
+
+	if (equipment.isOccupied(itemSlot)) {
+		unequip(itemSlot);
+	}
+
+	equipment.equip(item);
+	boostStats(item);
+}
+
+void Player::unequip(int slot) {
+	Equippable *item = equipment.unequip(slot);
+	reduceStats(item);
+	addToInventory(item);
+}
+
+void Player::consume(Consumable *item) {
+	health += item -> getHealAmount();
+
+	if (health > maxHealth) {
+		health = maxHealth;
+	}
+
+	cout << "Some health has been restored. Your health is now " << health << "/" << maxHealth << "." << endl;
+}
+
+void Player::boostStats(Equippable *item) {
+	healthBonus += item -> getHealthBoost();
+	attackBonus += item -> getAttackBoost();
+	strengthBonus += item -> getStrengthBoost();
+	defenseBonus += item -> getDefenseBoost();
+
+	refreshStats();
+}
+
+void Player::reduceStats(Equippable *item) {
+	healthBonus -= item -> getHealthBoost();
+	attackBonus -= item -> getAttackBoost();
+	strengthBonus -= item -> getStrengthBoost();
+	defenseBonus -= item -> getDefenseBoost();
+
+	refreshStats();
+}
+
+void Player::refreshStats() {
+	maxHealth = baseHealth + healthBonus;
+	if (health > maxHealth) {
+		health = maxHealth;
+	}
+
+	attack = baseAttack + attackBonus;
+	strength = baseStrength + strengthBonus;
+	defense = baseDefense + defenseBonus;
+}
+
+void Player::showStats() {
+	cout << "     Name: " << name << endl;
+	cout << "      Age: " << age << endl;
+	cout << "   Vitals: " << vitals() << endl << endl;
+
+	cout << "  Base HP: " << baseHealth << endl;
+	cout << " HP Bonus: " << healthBonus << endl;
+	cout << "   Max HP: " << maxHealth << endl << endl;
+
+	cout << " Base Att: " << baseAttack << endl;
+	cout << "   Attack: " << attack << endl;
+	cout << "Att Bonus: " << attackBonus << endl << endl;
+
+	cout << " Base Str: " << baseStrength << endl;
+	cout << " Strength: " << strength << endl;
+	cout << "Str Bonus: " << strengthBonus << endl << endl;
+
+	cout << " Base Def: " << baseDefense << endl;
+	cout << "  Defense: " << defense << endl;
+	cout << "Def Bonus: " << defenseBonus << endl << endl;
+
+	cout << "    Level: " << level << endl;
+	cout << "      Exp: " << experience << endl;
+	cout << " Next Lvl: " << nextLevel << endl << endl;
 }

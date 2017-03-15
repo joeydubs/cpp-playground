@@ -14,7 +14,7 @@
 
 class Inventory {
 private:
-	map <int, Item> inventory;
+	map <int, Item*> inventory;
 	int size;
 	bool full;
 	int nextFree;
@@ -23,9 +23,10 @@ private:
 public:
 	Inventory();
 	bool isFull() {return full;}
-	void addItem(Item item);
-	Item getItem(int slot);
-	void showInv();
+	void addItem(Item *item);
+	Item* getItem(int slot);
+	void dropItem(int slot);
+	void showInventory();
 };
 
 #endif

@@ -11,6 +11,7 @@
 #include <ctime>
 #include "monster.h"
 #include "item.h"
+#include "global.h"
 
 using namespace std;
 
@@ -64,8 +65,8 @@ string Monster::vitals() {
 	return std::to_string(health) + "/" + std::to_string(maxHealth);
 }
 
-Item Monster::getDrop() {
+Item* Monster::getDrop() {
 	int slot = rand() % dropTable.size();
-	Item drop = dropTable.at(slot);
+	Item *drop = dropTable.at(slot);
 	return drop;
 }

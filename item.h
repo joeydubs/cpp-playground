@@ -14,15 +14,19 @@
 using namespace std;
 
 class Item {
-private:
+protected:
 	string name;
+	/* Item types:
+	 *	1 - Equippable
+	 *	2 - Consumable
+	*/
 	int type;
 	int levelReq;
 public:
 	Item(string name, int type, int levelReq);
 	string getName() {return name;}
 	int getType() {return type;}
-	string toString();
+	virtual string toString();
 	friend ostream &operator<<(ostream &out, const Item &item);
 };
 
