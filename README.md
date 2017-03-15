@@ -7,3 +7,5 @@ The monsters will drop items from a drop table to be added (automatically) to th
 or consume items (in the case of health potions).
 
 Items that are equipped will affect the players stats.
+
+If you have any comments on things I could do better, please drop me an email! [it's on my profile ;) ]
