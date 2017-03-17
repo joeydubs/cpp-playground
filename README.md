@@ -1,4 +1,4 @@
-# cpp-playground
+# cpp-rpg-playground
 
 Beginning to teach myself c++. Hopefully I am doing well.
 
