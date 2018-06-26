@@ -10,4 +10,4 @@ Items that are equipped will affect the players stats.
 
 
 
-If you have any comments on things I could do better, please drop me an email! [it's on my profile ;) ]
+If you have any comments on things I could do better, please drop me an email or comment!
